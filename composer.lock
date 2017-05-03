@@ -973,12 +973,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/drupal/core.git",
-                "reference": "038296175b249e4b5f552f7bc8fb6bf5adb05514"
+                "reference": "82c432cfe728458538d4826c9c4be57dcf35443b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/drupal/core/zipball/038296175b249e4b5f552f7bc8fb6bf5adb05514",
-                "reference": "038296175b249e4b5f552f7bc8fb6bf5adb05514",
+                "url": "https://api.github.com/repos/drupal/core/zipball/82c432cfe728458538d4826c9c4be57dcf35443b",
+                "reference": "82c432cfe728458538d4826c9c4be57dcf35443b",
                 "shasum": ""
             },
             "require": {
@@ -6933,6 +6933,9 @@
             "extra": {
                 "branch-alias": {
                     "dev-master": "8.0.x-dev"
+                },
+                "patches_applied": {
+                    "2697 - Don't add profile dependencies to required_by array of modules": "https://patch-diff.githubusercontent.com/raw/drush-ops/drush/pull/2697.patch"
                 }
             },
             "autoload": {
