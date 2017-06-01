@@ -1,6 +1,15 @@
 .DS_Store
 bin/
-docroot/
+docroot/*
+!docroot/libraries
+!docroot/modules
+!docroot/themes
+!docroot/sites
+docroot/sites/default
+docroot/sites/example*
+docroot/sites/development.services.yml
+!docroot/sites/sites.php
+!docroot/sites/studentlitteratur.se
 vendor/
 node_modules/
 bower_components/
