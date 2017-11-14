@@ -7,7 +7,7 @@ use Drupal\Core\Ajax\ReplaceCommand;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\lightning_media\Element\AjaxUpload;
 use Drupal\lightning_media\MediaHelper;
-use Drupal\media_entity\MediaInterface;
+use Drupal\media\MediaInterface;
 
 /**
  * An Entity Browser widget for creating media entities from uploaded files.
@@ -65,13 +65,17 @@ class FileUpload extends EntityFormProxy {
     // it as the first validator, allowing it to accept only file extensions
     // associated with existing media bundles.
     if (empty($validators['file_validate_extensions'])) {
+      $allowed_bundles = $this->getAllowedBundles($form_state);
+
       $validators = array_merge([
         'file_validate_extensions' => [
-          implode(' ', $this->helper->getFileExtensions(TRUE)),
+          implode(' ', $this->helper->getFileExtensions(TRUE, $allowed_bundles)),
         ],
         // This must be a function because file_validate() still thinks that
         // function_exists() is a good way to ensure callability.
-        'lightning_media_validate_upload' => [],
+        'lightning_media_validate_upload' => [
+          $allowed_bundles,
+        ],
       ], $validators);
     }
     $form['input']['#upload_validators'] = $validators;
@@ -97,7 +101,7 @@ class FileUpload extends EntityFormProxy {
    * {@inheritdoc}
    */
   public function submit(array &$element, array &$form, FormStateInterface $form_state) {
-    /** @var \Drupal\media_entity\MediaInterface $entity */
+    /** @var \Drupal\media\MediaInterface $entity */
     $entity = $element['entity']['#entity'];
 
     $file = MediaHelper::useFile(

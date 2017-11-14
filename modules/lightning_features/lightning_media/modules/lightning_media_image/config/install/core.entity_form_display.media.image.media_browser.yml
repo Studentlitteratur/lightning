@@ -6,7 +6,7 @@ dependencies:
     - field.field.media.image.field_media_in_library
     - field.field.media.image.image
     - image.style.medium
-    - media_entity.bundle.image
+    - media.type.image
   module:
     - image
 id: media.image.media_browser
@@ -20,13 +20,18 @@ content:
     settings:
       display_label: true
     third_party_settings: {  }
+    region: content
   image:
-    type: image_immutable
+    type: image_image
     weight: 0
     settings:
       preview_image_style: medium
       progress_indicator: throbber
-    third_party_settings: {  }
+    third_party_settings:
+      lightning_media:
+        file_links: false
+        remove_button: false
+    region: content
   name:
     type: string_textfield
     weight: 3
@@ -34,6 +39,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
 hidden:
   created: true
   uid: true

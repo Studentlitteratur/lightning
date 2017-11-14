@@ -4,9 +4,7 @@ dependencies:
   module:
     - file
     - image
-    - media_entity
-_core:
-  default_config_hash: r9b1gWJ-hlQu_IGdWF9eLSy5aRpbiYsMENevFeLnjXw
+    - media
 id: media.image
 field_name: image
 entity_type: media
@@ -15,7 +13,6 @@ settings:
   uri_scheme: public
   default_image:
     uuid: null
-    fid: 0
     alt: ''
     title: ''
     width: null

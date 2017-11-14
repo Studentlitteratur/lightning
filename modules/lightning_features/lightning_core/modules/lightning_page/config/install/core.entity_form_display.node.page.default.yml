@@ -3,10 +3,8 @@ status: true
 dependencies:
   config:
     - field.field.node.page.body
-    - field.field.node.page.field_meta_tags
     - node.type.page
   module:
-    - metatag
     - path
     - text
 id: node.page.default
@@ -21,6 +19,7 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   uid:
     type: entity_reference_autocomplete
     weight: 1
@@ -29,28 +28,33 @@ content:
       size: 60
       placeholder: ''
     third_party_settings: {  }
+    region: content
   created:
     type: datetime_timestamp
     weight: 2
     settings: {  }
     third_party_settings: {  }
+    region: content
   promote:
     type: boolean_checkbox
     settings:
       display_label: true
     weight: 3
     third_party_settings: {  }
+    region: content
   sticky:
     type: boolean_checkbox
     settings:
       display_label: true
     weight: 4
     third_party_settings: {  }
+    region: content
   path:
     type: path
     weight: 5
     settings: {  }
     third_party_settings: {  }
+    region: content
   body:
     type: text_textarea_with_summary
     weight: 6
@@ -59,11 +63,7 @@ content:
       summary_rows: 3
       placeholder: ''
     third_party_settings: {  }
-  field_meta_tags:
-    type: metatag_firehose
-    weight: 7
-    settings: {  }
-    third_party_settings: {  }
+    region: content
   scheduled_update:
     type: inline_entity_form_complex
     weight: 8
@@ -75,4 +75,6 @@ content:
       allow_existing: false
       match_operator: CONTAINS
     third_party_settings: {  }
-hidden: {  }
+    region: content
+hidden:
+  status: true

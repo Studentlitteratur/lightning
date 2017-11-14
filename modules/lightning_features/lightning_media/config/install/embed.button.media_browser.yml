@@ -3,7 +3,7 @@ status: true
 dependencies:
   module:
     - entity_embed
-    - media_entity
+    - media
 label: 'Media browser'
 id: media_browser
 type_id: entity
@@ -12,6 +12,7 @@ type_settings:
   bundles: {  }
   display_plugins:
     - 'entity_reference:entity_reference_entity_view'
+    - media_image
   entity_browser: media_browser
   entity_browser_settings:
     display_review: false

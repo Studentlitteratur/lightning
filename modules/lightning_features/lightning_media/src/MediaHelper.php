@@ -6,7 +6,7 @@ use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\file\FileInterface;
 use Drupal\file\Plugin\Field\FieldType\FileItem;
 use Drupal\lightning_media\Exception\IndeterminateBundleException;
-use Drupal\media_entity\MediaInterface;
+use Drupal\media\MediaInterface;
 
 /**
  * Provides helper methods for dealing with media entities.
@@ -36,32 +36,31 @@ class MediaHelper {
    * @param bool $check_access
    *   (optional) Whether to filter the bundles by create access for the current
    *   user. Defaults to FALSE.
+   * @param string[] $bundles
+   *   (optional) An array of bundle IDs from which to retrieve source field
+   *   extensions. If omitted, all available bundles are allowed.
    *
    * @return string[]
    *   The file extensions accepted by all available bundles.
    */
-  public function getFileExtensions($check_access = FALSE) {
+  public function getFileExtensions($check_access = FALSE, array $bundles = []) {
     $extensions = '';
 
     // Lightning Media overrides the media_bundle storage handler with a special
     // one that adds an optional second parameter to loadMultiple().
-    $bundles = $this->entityTypeManager
-      ->getStorage('media_bundle')
-      ->loadMultiple(NULL, $check_access);
+    $storage = $this->entityTypeManager
+      ->getStorage('media_type');
+    $media_types = $storage->loadMultiple($bundles ?: NULL, $check_access);
 
-    /** @var \Drupal\media_entity\MediaBundleInterface $bundle */
-    foreach ($bundles as $bundle) {
-      $type_plugin = $bundle->getType();
+    /** @var \Drupal\media\MediaTypeInterface $media_type */
+    foreach ($media_types as $media_type) {
+      $field = $media_type->getSource()->getSourceFieldDefinition($media_type);
 
-      if ($type_plugin instanceof SourceFieldInterface) {
-        $field = $type_plugin->getSourceFieldDefinition($bundle);
-
-        // If the field is a FileItem or any of its descendants, we can consider
-        // it a file field. This will automatically include things like image
-        // fields, which extend file fields.
-        if (is_a($field->getItemDefinition()->getClass(), FileItem::class, TRUE)) {
-          $extensions .= $field->getSetting('file_extensions') . ' ';
-        }
+      // If the field is a FileItem or any of its descendants, we can consider
+      // it a file field. This will automatically include things like image
+      // fields, which extend file fields.
+      if (is_a($field->getItemDefinition()->getClass(), FileItem::class, TRUE)) {
+        $extensions .= $field->getSetting('file_extensions') . ' ';
       }
     }
     $extensions = preg_split('/,?\s+/', rtrim($extensions));
@@ -76,26 +75,30 @@ class MediaHelper {
    * @param bool $check_access
    *   (optional) Whether to filter the bundles by create access for the current
    *   user. Defaults to TRUE.
+   * @param string[] $bundles
+   *   (optional) A set of media bundle IDs which might match the input. If
+   *   omitted, all available bundles are checked.
    *
-   * @return \Drupal\media_entity\MediaBundleInterface
+   * @return \Drupal\media\MediaTypeInterface
    *   A media bundle that can accept the input value.
    *
    * @throws \Drupal\lightning_media\Exception\IndeterminateBundleException if
    * no bundle can be matched to the input value.
    */
-  public function getBundleFromInput($value, $check_access = TRUE) {
+  public function getBundleFromInput($value, $check_access = TRUE, array $bundles = []) {
     // Lightning Media overrides the media_bundle storage handler with a special
     // one that adds an optional second parameter to loadMultiple().
-    $bundles = $this->entityTypeManager
-      ->getStorage('media_bundle')
-      ->loadMultiple(NULL, $check_access);
+    $media_types = $this->entityTypeManager
+      ->getStorage('media_type')
+      ->loadMultiple($bundles ?: NULL, $check_access);
+    ksort($media_types);
 
-    /** @var \Drupal\media_entity\MediaBundleInterface $bundle */
-    foreach ($bundles as $bundle) {
-      $type_plugin = $bundle->getType();
+    /** @var \Drupal\media\MediaTypeInterface $media_type */
+    foreach ($media_types as $media_type) {
+      $source = $media_type->getSource();
 
-      if ($type_plugin instanceof InputMatchInterface && $type_plugin->appliesTo($value, $bundle)) {
-        return $bundle;
+      if ($source instanceof InputMatchInterface && $source->appliesTo($value, $media_type)) {
+        return $media_type;
       }
     }
     throw new IndeterminateBundleException($value);
@@ -106,16 +109,19 @@ class MediaHelper {
    *
    * @param mixed $value
    *   The input value.
+   * @param string[] $bundles
+   *   (optional) A set of media bundle IDs which might match the input value.
+   *   If omitted, all bundles to which the user has create access are checked.
    *
-   * @return \Drupal\media_entity\MediaInterface
+   * @return \Drupal\media\MediaInterface
    *   The unsaved media entity.
    */
-  public function createFromInput($value) {
-    /** @var \Drupal\media_entity\MediaInterface $entity */
+  public function createFromInput($value, array $bundles = []) {
+    /** @var \Drupal\media\MediaInterface $entity */
     $entity = $this->entityTypeManager
       ->getStorage('media')
       ->create([
-        'bundle' => $this->getBundleFromInput($value)->id(),
+        'bundle' => $this->getBundleFromInput($value, TRUE, $bundles)->id(),
       ]);
 
     $field = static::getSourceField($entity);
@@ -128,7 +134,7 @@ class MediaHelper {
   /**
    * Attaches a file entity to a media entity.
    *
-   * @param \Drupal\media_entity\MediaInterface $entity
+   * @param \Drupal\media\MediaInterface $entity
    *   The media entity.
    * @param \Drupal\file\FileInterface $file
    *   The file entity.
@@ -169,7 +175,7 @@ class MediaHelper {
   /**
    * Prepares the destination directory for a file attached to a media entity.
    *
-   * @param \Drupal\media_entity\MediaInterface $entity
+   * @param \Drupal\media\MediaInterface $entity
    *   The media entity.
    *
    * @return string
@@ -195,14 +201,14 @@ class MediaHelper {
   /**
    * Indicates if the media entity's type plugin supports dynamic previews.
    *
-   * @param \Drupal\media_entity\MediaInterface $entity
+   * @param \Drupal\media\MediaInterface $entity
    *   The media entity.
    *
    * @return bool
    *   TRUE if dynamic previews are supported, FALSE otherwise.
    */
   public static function isPreviewable(MediaInterface $entity) {
-    $plugin_definition = $entity->getType()->getPluginDefinition();
+    $plugin_definition = $entity->getSource()->getPluginDefinition();
 
     return isset($plugin_definition['preview']);
   }
@@ -210,7 +216,7 @@ class MediaHelper {
   /**
    * Returns the media entity's source field item list.
    *
-   * @param \Drupal\media_entity\MediaInterface $entity
+   * @param \Drupal\media\MediaInterface $entity
    *   The media entity.
    *
    * @return \Drupal\Core\Field\FieldItemListInterface|null
@@ -218,16 +224,11 @@ class MediaHelper {
    *   plugin does not define a source field.
    */
   public static function getSourceField(MediaInterface $entity) {
-    $type_plugin = $entity->getType();
+    $field = $entity->getSource()->getSourceFieldDefinition($entity->bundle->entity);
 
-    if ($type_plugin instanceof SourceFieldInterface) {
-      $field = $type_plugin->getSourceFieldDefinition($entity->bundle->entity);
-
-      return $field
-        ? $entity->get($field->getName())
-        : NULL;
-    }
-    return NULL;
+    return $field
+      ? $entity->get($field->getName())
+      : NULL;
   }
 
 }

@@ -1,8 +1,130 @@
+## 2.2.3
+* Updated to and require a minimum of Drupal Core 8.4.1.
+
+## 2.2.2
+* Fixed a bug where certain versions of Drush would erroneously report
+  unfulfilled requirements when running database updates. (Issue #2919204)
+* Removed a duplicate directory that caused problems when downloading via
+  Composer. (GitHub #502)
+* Worked around a bug where some versions of Drush run hooks that are provided
+  by uninstalled modules. (GitHub #496)
+
+## 2.2.1
+* Lightning Media has been updated to use the new Core Media system.
+* Fixed a bug where the "Publishing status" checkbox appeared on content edit
+  forms when it should have been hidden. (GitHub #479)
+
+## 2.2.0
+* Lightning has been updated to run on and now requires Drupal Core 8.4.x.
+
+## 2.1.8
+* Added the ability to easily crop images contained in media entities and use
+  the cropped version when embedding or selecting the media item.
+  (Issue #2690423)
+* Lightning Media now includes a bulk upload form that allows you to create
+  multiple image media entities at once. (#2672038)
+* You can now run Lightning's manual update steps via an interactive Drupal
+  Console command. (GitHub #462)
+* OAuth key pairs:
+  * Lightning will no longer try to guess where keys should be stored and won't
+    generate the keys until an administrator triggers that action. (GitHub #445) 
+  * Key pairs are now generated with 600 permissions. (GitHub #443)
+  * Better error messages are shown if the system encounters an error when
+    generating OAuth key pairs. (GitHub #440)
+* Lightning no longer patches Drush and therefore has no opinion about which
+  version of Drush you use in your project. (GitHub #459) 
+* Page manager is no longer included in the codebase. (GitHub #466)
+* You can now choose to hide the links to API docs shown on entity bundles via a
+  config option. (GitHub #435)
+* Fixed a bug where Entity Browser filters might not work after updating to core
+  8.3.7. (GitHub #441)
+* Operations is now the last column on the admin/content view. (GitHub #429)
+
+## 2.1.7
+* Security updated Drupal core to 8.3.7.
+* Updated Entity Browser to 1.1.
+* Lightning has a new top-level component called Content API. This component is
+  installed by default and exposes all entities in your site in the
+  machine-consumable JSON API format. This makes Lightning friendlier to
+  decoupled applications, and allows it to be used as a backend for such. As
+  part of this feature, Lightning now includes the JSON API, OpenAPI, and
+  Simple OAuth modules, with basic default configuration.
+  (GitHub #423, #421, #424, #433, and Issue #2896267)
+* Lightning now supports bringing in front-end JavaScript libraries with
+  Composer, via Asset Packagist. To take advantage of this in your
+  Composer-based Lightning project, follow the instructions at
+  http://lightning.acquia.com/blog/round-your-front-end-javascript-libraries-composer
+  (GitHub #431)
+* Lightning Core no longer has a hard dependency on the Metatag or Menu UI
+  modules. (GitHub #418, #420 and #427)
+* Lightning no longer has an implicit hard dependency on the Bartik or Seven
+  themes. (Issue #2899017)
+* Page Manager is no longer required by Lightning Layout. It is still shipped
+  with Lightning, but is not a dependency and will be removed from Lightning in
+  the next release. If you are using Page Manager, you must explicitly include
+  it as a dependency of your project. Otherwise, you should uninstall it as
+  soon as possible. (GitHub #410)
+* Quick Edit is no longer visible on published content when Lightning Workflow
+  is enabled, because Quick Edit does not deal properly with forward revisions.
+  In Lightning, you will only be able to use Quick Edit on unpublished drafts.
+  (Issue #2894874)
+* Split scheduled update functionality into a sub-component of Lightning
+  Workflow, installed by default on new Lightning sites. (Issue #2893542)
+* Panels was updated to version 4.2. (GitHub #409)
+* Removed unnecessary lightning_core_entity_load(). (GitHub #406)
+
+## 2.1.6
+* Lightning now provides a Display Plugin for images embedded via CKEditor that
+  allows editors to select an image style, alt text, and other settings each
+  time an image is embedded. (Issue #2784699) 
+* You can now select and insert media items from a single-cardinality media
+  browser with a double-click. (Issue #2888535)
+* Added documentation about the known incompatibility between Workbench
+  Moderation and Content Moderation. (Issue #2869257)
+* Fixed a bug where Lightning Core might try to alter the value of a
+  non-existent array key for unit tests. (GitHub #394)
+
+## 2.1.5
+* Drupal core was security updated to 8.3.4.
+* Layout Plugin is no longer included with Lightning. (Issue #2873728)
+* Lightning is now pinned to the 3.2.x line of the Drupal Extension for Behat
+  due to an incompatibility between the latest versions of it and Behat. See
+  https://github.com/jhedstrom/drupalextension/issues/386 for more information
+  (GitHub #389)
+* Lightning now tests its bundled configuration for proper conformance to
+  configuration schema. (GitHub #383 and #388)
+
+## 2.1.4
+* Implemented UX improvements for media reference fields using Lightning's
+  media browser -- the maximum number of items you can select will be displayed
+  above the field. (GitHub #363)
+* Fixed a bug where the media browser's upload widget, when used with an entity
+  reference field, would not respect the media bundles that the field could
+  reference. (GitHub #370)
+* Fixed a bug where content types that do not use Workbench Moderation would not
+  display their "Create new revision" checkbox. (Issue #2876698)
+* All of the entity view and form displays bundled with Lightning now include
+  region information. (GitHub #366)
+* Patched Drupal core to suppress non-actionable warnings about expected
+  behavior. (Issue #2878149 and GitHub #372)
+* Various default configuration bundled with Lightning Media was updated.
+  (GitHub #365)
+* Hid the "Entity View" block provided by CTools from Panels IPE, since it was
+  not compatible anyway. (Issue #2834173)
+* Acquia Connector, Media Entity Instagram, Metatag, and Search API were
+  updated to their latest versions. (GitHub #376)
+* Patched Panels to include three UI/UX improvements. (Issue #2884163)
+* Implemented a system to continuously generate configuration snapshots so that
+  config schema changes made by modules can be propagated into Lightning's
+  bundled default configuration. (GitHub #368)
+* Implemented a safeguard to ensure that dependencies which Lightning is
+  patching are always be pinned to a specific version. (GitHub #361)
+
 ## 2.1.3
-* Created new DrupalConsole commands that generate and customize behat.yml
-  configuration files for functional testing. (Issue #2812775 and GH #350) 
+* Created new Drupal Console commands that generate and customize behat.yml
+  configuration files for functional testing. (Issue #2812775 and GitHub #350)
 * Fixed a bug where the media library filter was hidden when the contextual
-  filter value was "all". (GH #352 and #354)
+  filter value was "all". (GitHub #352 and #354)
 * Updated Panels, Panelizer, Page Manage, and CTools to stable releases.
   (Issue #2874521)
 * Fixed a bug where Lightning could, under certain circumstances, break Drupal's
