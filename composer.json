@@ -13,7 +13,6 @@
         "mikey179/vfsStream": "~1.2",
         "phpunit/phpunit": "~4.8",
         "symfony/css-selector": "~2.8",
-        "drush/drush": "9.0.0-beta7",
         "drupal/drupal-extension": "~3.3.0",
         "behat/behat": "^3.0",
         "drupal/coder": "~8.2.0",
@@ -194,7 +193,9 @@
         "drupal/image_widget_crop": "^2.0",
         "bower-asset/cropper": "^2.3",
         "drupal/media_entity_document": "^1.0",
-        "drupal/media_entity_image": "^1.0"
+        "drupal/media_entity_image": "^1.0",
+        "drush/drush": "^8.1",
+        "bower-asset/progress-tracker": "^1.4"
     },
     "autoload": {
         "psr-4": {
