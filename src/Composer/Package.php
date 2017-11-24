@@ -170,6 +170,7 @@ class Package {
       else {
         $info['download']['branch'] = $package['version'];
       }
+      var_dump($package);
       $info['download']['revision'] = $package['source']['reference'];
     }
     else {
@@ -206,19 +207,23 @@ class Package {
    *   The generated make structure.
    */
   protected function buildPackage(array $package) {
-    $info = [
-      'download' => [
-        'type' => 'git',
-        'url' => $package['source']['url'],
-        'branch' => $package['version'],
-        'revision' => $package['source']['reference'],
-      ],
-    ];
+    $source = array_key_exists('source', $package) ? $package['source'] : (array_key_exists('dist', $package) ? $package['dist'] : FALSE);
+    if ($source) {
+      $info = [
+        'download' => [
+          'type' => 'git',
+          'url' => $source['url'],
+          'branch' => $package['version'],
+          'revision' => $source['reference'],
+        ],
+      ];
 
-    if (isset($package['extra']['patches_applied'])) {
-      $info['patch'] = array_values($package['extra']['patches_applied']);
+      if (isset($package['extra']['patches_applied'])) {
+        $info['patch'] = array_values($package['extra']['patches_applied']);
+      }
+      return $info;
     }
-    return $info;
+    return [];
   }
 
   /**
