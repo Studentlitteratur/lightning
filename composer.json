@@ -195,7 +195,9 @@
         "drupal/media_entity_document": "^1.0",
         "drupal/media_entity_image": "^1.0",
         "drush/drush": "^8.1",
-        "bower-asset/progress-tracker": "^1.4"
+        "bower-asset/progress-tracker": "^1.4",
+        "npm-asset/react": "^16.1",
+        "npm-asset/react-dom": "^16.1"
     },
     "autoload": {
         "psr-4": {
