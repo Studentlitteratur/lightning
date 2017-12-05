@@ -5,6 +5,7 @@ docroot/*
 !docroot/modules
 !docroot/themes
 !docroot/sites
+docroot/sites/simpletest
 docroot/sites/default
 docroot/sites/example*
 docroot/sites/development.services.yml
