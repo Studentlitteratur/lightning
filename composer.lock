@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "49d5708856c8878a68f12b075b1d09d1",
+    "content-hash": "1e2e7b948324fcaaa93657df5b379c7c",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -111,6 +111,110 @@
             "license": [
                 "MIT"
             ]
+        },
+        {
+            "name": "bshaffer/oauth2-server-httpfoundation-bridge",
+            "version": "V1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bshaffer/oauth2-server-httpfoundation-bridge.git",
+                "reference": "7113bfeaf863cc3e7f5a8a047123b354e5eea14a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bshaffer/oauth2-server-httpfoundation-bridge/zipball/7113bfeaf863cc3e7f5a8a047123b354e5eea14a",
+                "reference": "7113bfeaf863cc3e7f5a8a047123b354e5eea14a",
+                "shasum": ""
+            },
+            "require": {
+                "bshaffer/oauth2-server-php": ">=0.9",
+                "php": ">=5.3.0",
+                "symfony/http-foundation": ">=2.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "OAuth2\\HttpFoundationBridge": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brent Shaffer",
+                    "email": "bshafs@gmail.com",
+                    "homepage": "http://brentertainment.com"
+                }
+            ],
+            "description": "A bridge to HttpFoundation for oauth2-server-php",
+            "homepage": "http://github.com/bshaffer/oauth2-server-httpfoundation-bridge",
+            "keywords": [
+                "auth",
+                "httpfoundation",
+                "oauth",
+                "oauth2"
+            ],
+            "time": "2016-12-27T20:03:09+00:00"
+        },
+        {
+            "name": "bshaffer/oauth2-server-php",
+            "version": "v1.10.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bshaffer/oauth2-server-php.git",
+                "reference": "d158878425392fe5a0cc34f15dbaf46315ae0ed9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bshaffer/oauth2-server-php/zipball/d158878425392fe5a0cc34f15dbaf46315ae0ed9",
+                "reference": "d158878425392fe5a0cc34f15dbaf46315ae0ed9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.9"
+            },
+            "require-dev": {
+                "aws/aws-sdk-php": "~2.8",
+                "firebase/php-jwt": "~2.2",
+                "mongodb/mongodb": "^1.1",
+                "phpunit/phpunit": "^4.0",
+                "predis/predis": "dev-master",
+                "thobbs/phpcassa": "dev-master"
+            },
+            "suggest": {
+                "aws/aws-sdk-php": "~2.8 is required to use DynamoDB storage",
+                "firebase/php-jwt": "~2.2 is required to use JWT features",
+                "mongodb/mongodb": "^1.1 is required to use MongoDB storage",
+                "predis/predis": "Required to use Redis storage",
+                "thobbs/phpcassa": "Required to use Cassandra storage"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "OAuth2": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Brent Shaffer",
+                    "email": "bshafs@gmail.com",
+                    "homepage": "http://brentertainment.com"
+                }
+            ],
+            "description": "OAuth2 Server for PHP",
+            "homepage": "http://github.com/bshaffer/oauth2-server-php",
+            "keywords": [
+                "auth",
+                "oauth",
+                "oauth2"
+            ],
+            "time": "2017-11-15T01:41:02+00:00"
         },
         {
             "name": "caxy/php-htmldiff",
@@ -2726,6 +2830,79 @@
             "support": {
                 "source": "http://cgit.drupalcode.org/metatag",
                 "issues": "http://drupal.org/project/issues/metatag"
+            }
+        },
+        {
+            "name": "drupal/oauth2_server",
+            "version": "1.0.0-beta1",
+            "source": {
+                "type": "git",
+                "url": "https://git.drupal.org/project/oauth2_server",
+                "reference": "8.x-1.0-beta1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://ftp.drupal.org/files/projects/oauth2_server-8.x-1.0-beta1.zip",
+                "reference": "8.x-1.0-beta1",
+                "shasum": "d929048e779183f595043e869fc3b12feb0c1b35"
+            },
+            "require": {
+                "bshaffer/oauth2-server-httpfoundation-bridge": "~1.1",
+                "bshaffer/oauth2-server-php": "~1.7",
+                "drupal/core": "*"
+            },
+            "type": "drupal-module",
+            "extra": {
+                "branch-alias": {
+                    "dev-1.x": "1.x-dev"
+                },
+                "drupal": {
+                    "version": "8.x-1.0-beta1",
+                    "datestamp": "1509566285",
+                    "security-coverage": {
+                        "status": "not-covered",
+                        "message": "Beta releases are not covered by Drupal security advisories."
+                    }
+                }
+            },
+            "notification-url": "https://packages.drupal.org/8/downloads",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Damien Tournoud",
+                    "homepage": "https://www.drupal.org/user/22211"
+                },
+                {
+                    "name": "R.Muilwijk",
+                    "homepage": "https://www.drupal.org/user/159883"
+                },
+                {
+                    "name": "bojanz",
+                    "homepage": "https://www.drupal.org/user/86106"
+                },
+                {
+                    "name": "jsacksick",
+                    "homepage": "https://www.drupal.org/user/972218"
+                },
+                {
+                    "name": "kotnik",
+                    "homepage": "https://www.drupal.org/user/16132"
+                },
+                {
+                    "name": "pjcdawkins",
+                    "homepage": "https://www.drupal.org/user/1025236"
+                },
+                {
+                    "name": "sanduhrs",
+                    "homepage": "https://www.drupal.org/user/28074"
+                }
+            ],
+            "description": "Provides OAuth2 server functionality.",
+            "homepage": "https://www.drupal.org/project/oauth2_server",
+            "support": {
+                "source": "http://cgit.drupalcode.org/oauth2_server"
             }
         },
         {
@@ -11392,6 +11569,7 @@
         "drupal/media_entity_document": 20,
         "drupal/media_entity_image": 20,
         "drupal/wbm2cm": 20,
+        "drupal/oauth2_server": 10,
         "drupal/media_entity_generic": 20
     },
     "prefer-stable": true,

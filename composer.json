@@ -203,7 +203,8 @@
         "bower-asset/progress-tracker": "^1.4",
         "npm-asset/react": "^16.1",
         "npm-asset/react-dom": "^16.1",
-        "solarium/solarium": "^3.8"
+        "solarium/solarium": "^3.8",
+        "drupal/oauth2_server": "^1.0@beta"
     },
     "autoload": {
         "psr-4": {
